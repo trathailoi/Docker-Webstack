@@ -31,6 +31,8 @@ RUN apk -U upgrade && apk add --no-cache \
     && rm -rf /var/cache/apk/* /etc/nginx/conf.d/*
 #/etc/php8/conf.d/* /etc/php8/php-fpm.d/*
 
+RUN ln -s /usr/bin/php8 /usr/bin/php
+
 COPY files/s6-overlay files/general files/php8 /
 
 WORKDIR /www
