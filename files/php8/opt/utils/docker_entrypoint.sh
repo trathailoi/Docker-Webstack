@@ -15,7 +15,8 @@ else
         php8-phar \
         php8-json \
         php8-mysqli \
-        php8-zip
+        php8-zip \
+        php8-xmlrpc
 
     echo "\e[1;93;100m Install WP-CLI \e[0m"
     # curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;
@@ -38,7 +39,6 @@ else
             php8-bcmath \
             php8-bz2 \
             php8-dom \
-            php8-xmlrpc \
             php8-common \
             php8-curl \
             php8-ctype \
