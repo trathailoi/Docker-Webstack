@@ -15,8 +15,7 @@ else
         php8-phar \
         php8-json \
         php8-mysqli \
-        php8-zip \
-        php8-xmlrpc
+        php8-zip
 
     echo "\e[1;93;100m Install WP-CLI \e[0m"
     # curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;
@@ -44,16 +43,20 @@ else
             php8-ctype \
             php8-soap \
             php8-gd \
+            php8-intl \
             php8-iconv \
             php8-mbstring \
+            php8-opcache \
             php8-mysqlnd \
             php8-openssl \
             php8-pdo_mysql \
             php8-session \
             php8-xml \
+            php8-xmlreader \
             php8-simplexml \
             php8-tokenizer \
-            php8-xmlwriter
+            php8-xmlwriter \
+            php8-zlib
 
         echo "\e[1;93;100m Install Composer \e[0m"
         # php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/tmp/ --filename=composer; alias composer='php /tmp/composer';
