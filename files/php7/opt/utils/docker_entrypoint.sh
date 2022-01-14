@@ -1,11 +1,15 @@
 #!/bin/env bash
 
 if [ -z "${EXTRA_PACKAGES}" ]; then
-    echo "\e[1;93;100m Installing extra packages \e[0m"
+    echo "\e[1;93;100m No extra packages to install. \e[0m"
+else
+    echo "\e[1;93;100m Installing extra packages... \e[0m"
     apk -U --no-cache add ${EXTRA_PACKAGES}
 fi
 
 if [ -z "${IS_WORDPRESS}" ]; then
+    echo "\e[1;93;100m Not a Wordpress site. No need to instal WP-CLI and packages. \e[0m"
+else
     echo "\e[1;93;100m Install PHP extensions - for WP-CLI \e[0m"
     apk -U --no-cache add \
         php7-phar \
@@ -24,8 +28,9 @@ if [ -z "${IS_WORDPRESS}" ]; then
     mkdir -p /www/wp-content/uploads && mkdir -p /www/wp-content/uploads/cache
     chmod -R 777 /www/wp-content/uploads
 
-
     if [ -z "${HAS_COMPOSER}" ]; then
+        echo "\e[1;93;100m No Composer. \e[0m"
+    else
         echo "\e[1;93;100m Install PHP extensions - for Composer \e[0m"
         apk -U --no-cache add \
             php7-bcmath \
@@ -56,8 +61,6 @@ if [ -z "${IS_WORDPRESS}" ]; then
         echo "\e[1;93;100m Begin composer install \e[0m"
         # composer install --ignore-platform-reqs --working-dir=/var/www/html/wp-content/themes/$THEME_NAME/
         composer install --working-dir=/www/wp-content/themes/$THEME_NAME/
-    else
-        echo "\e[1;93;100m No Composer. \e[0m"
     fi
 
     # Generate wp-config.php file
@@ -71,8 +74,6 @@ if [ -z "${IS_WORDPRESS}" ]; then
             }
             { print }
     ' "/tmp/wp-config-docker.php" > /www/wp-config.php
-else
-    echo "\e[1;93;100m Not a Wordpress site. No need to instal WP-CLI and packages. \e[0m"
 fi
 
 # use "set" for Wordpress to recognize environment variables
