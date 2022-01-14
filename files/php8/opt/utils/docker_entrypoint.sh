@@ -13,6 +13,7 @@ else
     echo "\e[1;93;100m Install PHP extensions - for WP-CLI \e[0m"
     apk -U --no-cache add \
         php8-phar \
+        php8-json \
         php8-mysqli
 
     echo "\e[1;93;100m Install WP-CLI \e[0m"
@@ -52,11 +53,11 @@ else
             php8-simplexml \
             php8-tokenizer \
             php8-xmlwriter \
-            php8-json \
             php8-zip
 
         echo "\e[1;93;100m Install Composer \e[0m"
-        php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/tmp/ --filename=composer; alias composer='php /tmp/composer';
+        # php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/tmp/ --filename=composer; alias composer='php /tmp/composer';
+        php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer;
 
         echo "\e[1;93;100m Begin composer install \e[0m"
         # composer install --ignore-platform-reqs --working-dir=/var/www/html/wp-content/themes/$THEME_NAME/
