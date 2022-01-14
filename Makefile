@@ -1,6 +1,7 @@
 # Variables
 S6TAG=v1.22.1.0
-PROJECTNAME=existenz/webstack
+# S6TAG=latest # https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
+PROJECTNAME=298862221448.dkr.ecr.us-east-1.amazonaws.com/nginx-php
 TAG=UNDEF
 PHP_VERSION=$(shell echo "$(TAG)" | sed -e 's/-codecasts//')
 
@@ -16,11 +17,11 @@ build:
 
 start:
 	if [ "$(TAG)" = "UNDEF" ]; then echo "please provide a valid TAG" && exit 1; fi
-	docker run -d -p 8080:80 --name existenz_webstack_instance $(PROJECTNAME):$(TAG)
+	docker run -d -p 8080:80 --name webstack_instance $(PROJECTNAME):$(TAG)
 
 stop:
-	docker stop -t0 existenz_webstack_instance || true
-	docker rm existenz_webstack_instance || true
+	docker stop -t0 webstack_instance || true
+	docker rm webstack_instance || true
 
 clean:
 	if [ "$(TAG)" = "UNDEF" ]; then echo "please provide a valid TAG" && exit 1; fi
@@ -30,6 +31,6 @@ clean:
 test:
 	if [ "$(TAG)" = "UNDEF" ]; then echo "please provide a valid TAG" && exit 1; fi
 	sleep 10
-	docker ps | grep existenz_webstack_instance | grep -q "(healthy)"
-	docker exec -t existenz_webstack_instance php-fpm --version | grep -q "PHP $(PHP_VERSION)"
+	docker ps | grep webstack_instance | grep -q "(healthy)"
+	docker exec -t webstack_instance php-fpm --version | grep -q "PHP $(PHP_VERSION)"
 	wget -q localhost:8080 -O- | grep -q "PHP Version $(PHP_VERSION)"

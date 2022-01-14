@@ -1,8 +1,11 @@
 FROM alpine:3.13
+#FROM alpine
 
-LABEL maintainer="docker@stefan-van-essen.nl"
+LABEL Maintainer="Loi Tra <loi.tra@9thwonder.com>"
+LABEL Description="Lightweight webstack with latest Nginx & PHP 7.0 & s6-overlay based on Alpine Linux."
 
 RUN apk -U upgrade && apk add --no-cache \
+    bash \
     curl \
     nginx \
     php7-fpm \
@@ -10,7 +13,8 @@ RUN apk -U upgrade && apk add --no-cache \
     && ln -s /usr/sbin/php-fpm7 /usr/sbin/php-fpm \
     && addgroup -S php \
     && adduser -S -G php php \
-    && rm -rf /var/cache/apk/* /etc/nginx/conf.d/* /etc/php7/conf.d/* /etc/php7/php-fpm.d/*
+    && rm -rf /var/cache/apk/* /etc/nginx/conf.d/*
+#/etc/php7/conf.d/* /etc/php7/php-fpm.d/*
 
 COPY files/s6-overlay files/general files/php7 /
 
@@ -19,7 +23,9 @@ RUN sed '/decorate_workers_output/s/^; //g' /etc/php7/php-fpm.conf
 
 WORKDIR /www
 
-ENTRYPOINT ["/init"]
+RUN chmod o+x /opt/utils/docker_entrypoint.sh; chmod 755 /opt/utils/docker_entrypoint.sh;
+ENTRYPOINT ["bash", "/opt/utils/docker_entrypoint.sh"]
+CMD ["/init"]
 
 EXPOSE 80
 
