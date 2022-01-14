@@ -14,7 +14,8 @@ else
     apk -U --no-cache add \
         php8-phar \
         php8-json \
-        php8-mysqli
+        php8-mysqli \
+        php8-zip
 
     echo "\e[1;93;100m Install WP-CLI \e[0m"
     # curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;
@@ -52,8 +53,7 @@ else
             php8-xml \
             php8-simplexml \
             php8-tokenizer \
-            php8-xmlwriter \
-            php8-zip
+            php8-xmlwriter
 
         echo "\e[1;93;100m Install Composer \e[0m"
         # php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/tmp/ --filename=composer; alias composer='php /tmp/composer';
