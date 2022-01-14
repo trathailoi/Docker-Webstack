@@ -24,11 +24,11 @@ else
     mv /tmp/wp-cli.phar /usr/local/bin/wp;
 
     echo "\e[1;93;100m Begin Download WP Core \e[0m"
-    wp core download --skip-content --allow-root --path=/www
+    wp core download --skip-content --allow-root --path=/var/www/html
 
     echo "\e[1;93;100m Correct permissions for UPLOADS folder \e[0m"
-    mkdir -p /www/wp-content/uploads && mkdir -p /www/wp-content/uploads/cache
-    chmod -R 777 /www/wp-content/uploads
+    mkdir -p /var/www/html/wp-content/uploads && mkdir -p /var/www/html/wp-content/uploads/cache
+    chmod -R 777 /var/www/html/wp-content/uploads
 
     if [ -z "${HAS_COMPOSER}" ]; then
         echo "\e[1;93;100m No Composer. \e[0m"
@@ -61,7 +61,7 @@ else
 
         echo "\e[1;93;100m Begin composer install \e[0m"
         # composer install --ignore-platform-reqs --working-dir=/var/www/html/wp-content/themes/$THEME_NAME/
-        composer install --working-dir=/www/wp-content/themes/$THEME_NAME/
+        composer install --working-dir=/var/www/html/wp-content/themes/$THEME_NAME/
     fi
 
     # Generate wp-config.php file
@@ -74,7 +74,7 @@ else
                     gsub("put your unique phrase here", str)
             }
             { print }
-    ' "/tmp/wp-config-docker.php" > /www/wp-config.php
+    ' "/tmp/wp-config-docker.php" > /var/www/html/wp-config.php
 fi
 
 # use "set" for Wordpress to recognize environment variables

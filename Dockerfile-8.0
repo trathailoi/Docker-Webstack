@@ -4,7 +4,7 @@ LABEL Maintainer="Loi Tra <loi.tra@9thwonder.com>"
 LABEL Description="Lightweight webstack with latest Nginx & PHP 7.0 & s6-overlay based on Alpine Linux."
 
 RUN apk -U upgrade && apk add --no-cache \
-    bash
+    bash \
     curl \
     nginx \
     php8-fpm \
