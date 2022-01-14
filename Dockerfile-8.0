@@ -7,7 +7,23 @@ RUN apk -U upgrade && apk add --no-cache \
     bash \
     curl \
     nginx \
+    php8 \
+    php8-ctype \
+    php8-curl \
+    php8-dom \
     php8-fpm \
+    php8-gd \
+    php8-intl \
+    php8-json \
+    php8-mbstring \
+    php8-mysqli \
+    php8-opcache \
+    php8-openssl \
+    php8-phar \
+    php8-session \
+    php8-xml \
+    php8-xmlreader \
+    php8-zlib \
     tzdata \
     && ln -s /usr/sbin/php-fpm8 /usr/sbin/php-fpm \
     && addgroup -S php \
