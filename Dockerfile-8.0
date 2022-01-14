@@ -9,7 +9,6 @@ RUN apk -U upgrade && apk add --no-cache \
     nginx \
     php8 \
     php8-fpm \
-    php8-phar \
     tzdata \
     && ln -s /usr/sbin/php-fpm8 /usr/sbin/php-fpm \
     && addgroup -S php \
