@@ -21,10 +21,8 @@ RUN ln -s /usr/bin/php8 /usr/bin/php
 
 COPY files/s6-overlay files/general files/php8 /
 
-WORKDIR /www
+WORKDIR /var/www/html
 
-RUN chmod o+x /opt/utils/docker_entrypoint.sh; chmod 755 /opt/utils/docker_entrypoint.sh;
-ENTRYPOINT ["bash", "/opt/utils/docker_entrypoint.sh"]
 CMD ["/init"]
 
 EXPOSE 80

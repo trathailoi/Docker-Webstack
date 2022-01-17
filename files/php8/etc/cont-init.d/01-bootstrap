@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/with-contenv bash
 color_yellow_with_bg='\e[0;93;100m'
 # Clear the color after that
 color_clear='\033[0m \n\n'
@@ -15,10 +15,10 @@ if [ -z "${IS_WORDPRESS}" ]; then
 else
     printf "${color_yellow_with_bg} Install PHP extensions - for WP-CLI ${color_clear}"
     apk -U --no-cache add \
-        php7-phar \
-        php7-json \
-        php7-mysqli \
-        php7-zip
+        php8-phar \
+        php8-json \
+        php8-mysqli \
+        php8-zip
 
     printf "${color_yellow_with_bg} Install WP-CLI ${color_clear}"
     # curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;
@@ -38,25 +38,28 @@ else
     else
         printf "${color_yellow_with_bg} Install PHP extensions - for Composer ${color_clear}"
         apk -U --no-cache add \
-            php7-bcmath \
-            php7-bz2 \
-            php7-dom \
-            php7-xmlrpc \
-            php7-common \
-            php7-curl \
-            php7-ctype \
-            php7-soap \
-            php7-gd \
-            php7-iconv \
-            php7-mbstring \
-            php7-mysqlnd \
-            php7-openssl \
-            php7-pdo_mysql \
-            php7-session \
-            php7-xml \
-            php7-simplexml \
-            php7-tokenizer \
-            php7-xmlwriter
+            php8-bcmath \
+            php8-bz2 \
+            php8-dom \
+            php8-common \
+            php8-curl \
+            php8-ctype \
+            php8-soap \
+            php8-gd \
+            php8-intl \
+            php8-iconv \
+            php8-mbstring \
+            php8-opcache \
+            php8-mysqlnd \
+            php8-openssl \
+            php8-pdo_mysql \
+            php8-session \
+            php8-xml \
+            php8-xmlreader \
+            php8-simplexml \
+            php8-tokenizer \
+            php8-xmlwriter \
+            php8-zlib
 
         printf "${color_yellow_with_bg} Install Composer ${color_clear}"
         # php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/tmp/ --filename=composer; alias composer='php /tmp/composer';
@@ -82,5 +85,5 @@ fi
 
 # use "set" for Wordpress to recognize environment variables
 echo "$VIRTUAL_HOST"
-set -eux;
-exec "$@"
+# set -eux;
+# exec "$@"
