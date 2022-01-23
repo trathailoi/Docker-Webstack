@@ -1,0 +1,88 @@
+# Anti XSS protection
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule ^(.*)$ index.php [F,L]
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK|HEAD|DELETE)
+RewriteRule .* - [F]
+# end anti XSS
+
+# Exceptions: Don't block these URLs
+RewriteRule ^(wp-includes/js/tinymce/wp-tinymce.php)$ - [NC,L]
+RewriteRule ^(wp-content/plugins/advanced-custom-fields-pro/assets/font/acf.woff2)$ - [NC,L]
+#disable access directory, only allow access static resource
+RewriteRule ^(wp-content|wp-includes)/([^/]+/)*([^/.]+\.)+(jp(e?g|2)?|png|gif|pdf|webp|bmp|ico|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|rar|xps|txt|7z|svg|od[tsp]|flv|mov|xml|ttf|woff|otf|eot|xsl|json)$ - [NC,L]
+RewriteRule ^(wp-content|wp-includes) index.php [NC,L]
+
+#Allow all admin url
+RewriteRule (wp\-admin) - [L]
+#disable directly access  to PHP file
+RewriteCond %{REQUEST_FILENAME} \.php$ [NC]
+RewriteCond %{REQUEST_FILENAME} !/index?\.php$
+RewriteCond %{REQUEST_FILENAME} !/wp-login.php$
+RewriteCond %{REQUEST_FILENAME} !/wp-tinymce.php$
+RewriteCond %{REQUEST_FILENAME} !/wp-signup.php$
+RewriteCond %{REQUEST_FILENAME} !/wp-activate.php$
+RewriteCond %{REQUEST_FILENAME} !/wp-cron.php$
+RewriteCond %{REQUEST_FILENAME} !/test.php$
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule \.php$ - [F,NC]
+
+RewriteRule ^(wp-includes|wp-content)/([^/]+/)*([^/.]+\.)+(jp(e?g|2)?|png|gif|webp|pdf|bmp|ico|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|xsl|rar|xps|txt|7z|svg|od[tsp]|flv|mov|ttf|eot|svg|otf|woff|woff2)$ - [L]
+RewriteRule wp-tinymce.php - [L]
+RewriteRule ^(wp-includes|wp-content) - [F,L]
+
+#MODULE DEFLATE
+<IfModule mod_deflate.c>
+<FilesMatch "\.(js|css|html|htm|php|xml|gif|GIF|jpeg|jpg|png|webp|json|svg|woff2)$">
+SetOutputFilter DEFLATE
+</FilesMatch>
+</IfModule>
+#END MODULE DEFLATE
+
+#BEGIN CACHE - 1 week
+<IfModule mod_headers.c>
+<FilesMatch "\.(js|css|ico|gif|GIF|png|jpg|jpeg|flv|pdf|svg|ttf|webp|eot|woff|json|svg|woff2)$">
+HEADER add "Cache-Control" "max-age=31536000"
+</FilesMatch>
+</IfModule>
+#END CACHE
+
+#BEGIN GZIP
+<IfModule mod_gzip.c>
+mod_gzip_on       Yes
+mod_gzip_dechunk  Yes
+mod_gzip_item_include file      .(html?|txt|css|js|php|pl|jpg|png|gif|GIF|webp|ico|jpeg|flv|xls|ppt|json|svg|woff2)$
+mod_gzip_item_include handler   ^cgi-script$
+mod_gzip_item_include mime      ^text/.*
+mod_gzip_item_include mime      ^application/x-javascript.*
+mod_gzip_item_exclude mime      ^image/.*
+mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</IfModule>
+#END GZIP
+
+php_value session.cookie_httponly 1
+php_value session.cookie_secure 1
+ErrorDocument 404 /404
+ErrorDocument 403 /404
+
+
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+php_value post_max_size 300M
+php_value upload_max_filesize 300M

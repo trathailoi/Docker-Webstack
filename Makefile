@@ -1,7 +1,7 @@
 # Variables
 S6TAG=v1.22.1.0
 # S6TAG=latest # https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
-PROJECTNAME=298862221448.dkr.ecr.us-east-1.amazonaws.com/nginx-php
+PROJECTNAME=298862221448.dkr.ecr.us-east-1.amazonaws.com/apache-php
 TAG=UNDEF
 PHP_VERSION=$(shell echo "$(TAG)" | sed -e 's/-codecasts//')
 
