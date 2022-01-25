@@ -19,7 +19,10 @@ RUN apk -U upgrade && apk add --no-cache \
 COPY files/s6-overlay files/general files/php7 /
 
 # Enable options supported by this version of PHP-FPM
-RUN sed '/decorate_workers_output/s/^; //g' /etc/php7/php-fpm.conf
+RUN set -eux; \
+    sed -i 's/memory_limit = .*/memory_limit = 256M/' /etc/php7/php.ini; \
+    sed -i 's/max_execution_time = .*/max_execution_time = 60/' /etc/php7/php.ini; \
+    sed '/decorate_workers_output/s/^; //g' /etc/php7/php-fpm.conf
 
 WORKDIR /var/www/html
 
