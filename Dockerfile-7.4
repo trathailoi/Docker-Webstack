@@ -47,3 +47,4 @@ WORKDIR /var/www/html
 CMD ["/init"]
 
 # HEALTHCHECK --interval=5s --timeout=5s CMD curl -f http://127.0.0.1/php-fpm-ping || exit 1
+HEALTHCHECK --interval=5s --timeout=5s CMD wget -q --no-cache --spider localhost || exit 1
