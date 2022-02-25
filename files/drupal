@@ -1,0 +1,48 @@
+#!/usr/bin/with-contenv bash
+color_yellow_with_bg='\e[0;93;100m'
+# Clear the color after that
+color_clear='\033[0m \n\n'
+
+if [ -z "${EXTRA_PACKAGES}" ]; then
+    printf "${color_yellow_with_bg} No extra packages to install. ${color_clear}"
+else
+    printf "${color_yellow_with_bg} Installing extra packages... ${color_clear}"
+    apk -U --no-cache add ${EXTRA_PACKAGES}
+fi
+
+printf "${color_yellow_with_bg} Install PHP extensions - for Composer ${color_clear}"
+apk -U --no-cache add \
+  php7-phar \
+  php7-json \
+  php7-mysqli \
+  php7-zip
+  php7-bcmath \
+  php7-bz2 \
+  php7-dom \
+  php7-xmlrpc \
+  php7-common \
+  php7-curl \
+  php7-ctype \
+  php7-soap \
+  php7-gd \
+  php7-iconv \
+  php7-mbstring \
+  php7-mysqlnd \
+  php7-openssl \
+  php7-pdo_mysql \
+  php7-session \
+  php7-xml \
+  php7-simplexml \
+  php7-tokenizer \
+  php7-xmlwriter
+
+printf "${color_yellow_with_bg} Install Composer ${color_clear}"
+php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer;
+
+printf "${color_yellow_with_bg} Begin composer install ${color_clear}"
+composer install -n
+
+# use "set" for Wordpress to recognize environment variables
+echo "$VIRTUAL_HOST"
+# set -eux;
+# exec "$@"

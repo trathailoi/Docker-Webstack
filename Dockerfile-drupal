@@ -1,0 +1,34 @@
+FROM alpine:3.13
+#FROM alpine
+
+LABEL Maintainer="Loi Tra <loi.tra@9thwonder.com>"
+LABEL Description="Lightweight webstack with latest Nginx & PHP 7.0 & s6-overlay based on Alpine Linux. Drupal."
+
+RUN apk -U upgrade && apk add --no-cache \
+    bash \
+    curl \
+    nginx \
+    php7-fpm \
+    tzdata \
+    && ln -s /usr/sbin/php-fpm7 /usr/sbin/php-fpm \
+    && addgroup -S php \
+    && adduser -S -G php php \
+    && rm -rf /var/cache/apk/* /etc/nginx/conf.d/*
+#/etc/php7/conf.d/* /etc/php7/php-fpm.d/*
+
+COPY files/s6-overlay files/general files/php7 /
+COPY files/drupal /etc/cont-init.d/01-bootstrap
+
+# Enable options supported by this version of PHP-FPM
+RUN set -eux; \
+    sed -i 's/memory_limit = .*/memory_limit = 256M/' /etc/php7/php.ini; \
+    sed -i 's/max_execution_time = .*/max_execution_time = 60/' /etc/php7/php.ini; \
+    sed '/decorate_workers_output/s/^; //g' /etc/php7/php-fpm.conf
+
+WORKDIR /var/www/html
+
+CMD ["/init"]
+
+EXPOSE 80
+
+HEALTHCHECK --interval=5s --timeout=5s CMD curl -f http://127.0.0.1/php-fpm-ping || exit 1
