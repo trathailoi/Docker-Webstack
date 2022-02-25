@@ -4,6 +4,8 @@ FROM alpine:3.13
 LABEL Maintainer="Loi Tra <loi.tra@9thwonder.com>"
 LABEL Description="Lightweight webstack with latest Nginx & PHP 7.0 & s6-overlay based on Alpine Linux."
 
+# https://github.com/gliderlabs/docker-alpine/issues/386
+# RUN echo -e "http://nl.alpinelinux.org/alpine/v3.13/main\nhttp://nl.alpinelinux.org/alpine/v3.13/community" > /etc/apk/repositories
 RUN apk -U upgrade && apk add --no-cache \
     bash \
     curl \
@@ -21,8 +23,12 @@ COPY files/s6-overlay files/general files/php7 /
 # Enable options supported by this version of PHP-FPM
 RUN set -eux; \
     sed -i 's/memory_limit = .*/memory_limit = 256M/' /etc/php7/php.ini; \
-    sed -i 's/max_execution_time = .*/max_execution_time = 60/' /etc/php7/php.ini; \
-    sed '/decorate_workers_output/s/^; //g' /etc/php7/php-fpm.conf
+    sed -i 's/max_execution_time = .*/max_execution_time = 600/' /etc/php7/php.ini; \
+    sed -i 's/upload_max_filesize = .*/upload_max_filesize = 300M/' /etc/php7/php.ini; \
+    sed -i 's/post_max_size = .*/post_max_size = 300M/' /etc/php7/php.ini; \
+    sed -i 's/^;upload_tmp_dir =$/upload_tmp_dir = \/tmp\//' /etc/php7/php.ini; \
+    sed '/decorate_workers_output/s/^; //g' /etc/php7/php-fpm.conf; \
+    chmod -R 777 /tmp;
 
 WORKDIR /var/www/html
 
