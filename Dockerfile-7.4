@@ -22,7 +22,7 @@ COPY files/s6-overlay files/general files/php7 /
 
 # Enable options supported by this version of PHP-FPM
 RUN set -eux; \
-    sed -i 's/memory_limit = .*/memory_limit = 256M/' /etc/php7/php.ini; \
+    sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php7/php.ini; \
     sed -i 's/max_execution_time = .*/max_execution_time = 600/' /etc/php7/php.ini; \
     sed -i 's/upload_max_filesize = .*/upload_max_filesize = 300M/' /etc/php7/php.ini; \
     sed -i 's/post_max_size = .*/post_max_size = 300M/' /etc/php7/php.ini; \

@@ -36,6 +36,9 @@ apk -U --no-cache add \
   php7-tokenizer \
   php7-xmlwriter
 
+# correct permission
+chmod -R 777 /tmp
+
 printf "${color_yellow_with_bg} Install Composer ${color_clear}"
 php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer;
 
